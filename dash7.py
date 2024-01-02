@@ -34,11 +34,16 @@ app.layout = html.Div(children=[
   ])
 
 @app.callback(
-    Output("texto", 'children'),
+    Output("grafqtdvendas", 'figure'),
     Input('listalojas', 'value')
 )
 def update_output(value):
-    return f'Loja Selecionada: {value}'
+    if value == "Todas as Lojas":
+        fig = px.bar(df, x="Produto", y="Quantidade", color="ID Loja", barmode="group")
+    else:
+        tabela_filtrada = df.loc[df['ID Loja']== value, :]
+        fig = px.bar(tabela_filtrada, x="Produto", y="Quantidade", color="ID Loja", barmode="group")
+    return fig
 
 if __name__ == '__main__':
     app.run(debug=True)
